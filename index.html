@@ -1,9 +1,12 @@
+
+
+So ztop · HTML
 <!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>So'zTop</title>
+<title>So'zTop v0.0.0.1</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap">
 <style>
 :root{--bg:#e9eff8;--card:#fff;--ink:#12213a;--mut:#5d6c84;--pri:#2f5bea;--ok:#12a06c;--bad:#e5484d;--tile:#ffd23f;--ln:#d3ddec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -101,6 +104,7 @@ input,textarea,select{font-size:16px}
 .bub{position:absolute;bottom:-80px;min-width:76px;min-height:76px;padding:10px;border-radius:50%;border:2px solid #fff9;background:radial-gradient(circle at 30% 30%,#fff,#7cc4ff);color:#12213a;font-weight:800;animation:up 7s linear both}
 .bub.ok{background:var(--ok)!important;color:#fff}.bub.bad{background:var(--bad)!important;color:#fff}
 @media(prefers-reduced-motion:reduce){.bub{bottom:auto;top:var(--y)}}
+.wrow{display:grid;gap:6px;padding-bottom:12px;border-bottom:1px solid var(--ln)}.wrow .tr{text-align:left;min-height:1.5em}.wrow .row2{justify-content:flex-start;margin:0}.ver{margin-top:24px;font-size:13px}
 </style>
 </head>
 <body>
@@ -111,21 +115,24 @@ const $=s=>document.querySelector(s);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const FL={uz:'🇺🇿',en:'🇬🇧',ru:'🇷🇺',de:'🇩🇪'};
 const L={
-uz:{tag:"Tilni o'yin bilan o'rgan",teacher:"O'qituvchi paneli",back:"Orqaga",again:"Qayta o'ynash",home:"Bosh sahifa",score:"Natija",know:"Bilaman",dont:"Bilmayman",hint:"Maslahat",clear:"Tozalash",set:"To'plam",name:"To'plam nomi",from:"Qaysi tildan",to:"Qaysi tilga",words:"Har qatorda: so'z = tarjima",save:"Saqlash",del:"O'chirish",edit:"Tahrirlash",need:"Kamida 4 ta juftlik kerak",soon:"Tez orada",moves:"Yurishlar",good:"Ajoyib!",fine:"Yaxshi!",more:"Yana mashq qiling",flip:"Kartani bosing",w:"so'z",saved:"Saqlandi",newset:"Yangi to'plam",check:"Tekshirish",needimg:"Kamida 4 ta so'zni emoji bilan yozing (🍎 = olma) yoki «Rasmlar» to'plamini tanlang.",needcat:"Kategoriya qo'shing: so'z = tarjima = kategoriya (kamida 2 ta) yoki «Rasmlar» to'plamini tanlang.",alpha:"Alifbo tartibida bosing",spin:"Charxni barmoq bilan aylantiring!",translate:"🌐 Tarjima qilish",translating:"Tarjima qilinmoqda…",trfail:"Tarjimon ishlamadi. «so'z = tarjima» ko'rinishida yozing.",trhint:"Faqat so'z yozsangiz ham bo'ladi (olma yoki apple), tarjimasini avtomatik topaman."},
+uz:{tag:"Tilni o'yin bilan o'rgan",teacher:"O'qituvchi paneli",back:"Orqaga",again:"Qayta o'ynash",home:"Bosh sahifa",score:"Natija",know:"Bilaman",dont:"Bilmayman",hint:"Maslahat",clear:"Tozalash",set:"To'plam",name:"To'plam nomi",from:"Qaysi tildan",to:"Qaysi tilga",words:"Har qatorda: so'z = tarjima",save:"Saqlash",del:"O'chirish",edit:"Tahrirlash",need:"Kamida 4 ta so'z kerak",soon:"Tez orada",moves:"Yurishlar",good:"Ajoyib!",fine:"Yaxshi!",more:"Yana mashq qiling",flip:"Kartani bosing",w:"so'z",saved:"Saqlandi",newset:"Yangi to'plam",check:"Tekshirish",needimg:"Kamida 4 ta so'zni emoji bilan yozing (🍎 = olma) yoki «Rasmlar» to'plamini tanlang.",needcat:"Kategoriya qo'shing: so'z = tarjima = kategoriya (kamida 2 ta) yoki «Rasmlar» to'plamini tanlang.",alpha:"Alifbo tartibida bosing",spin:"Charxni barmoq bilan aylantiring!",translate:"🌐 Tarjima qilish",translating:"Tarjima qilinmoqda…",trfail:"Tarjimon ishlamadi. Qayta urinib ko'ring.",trhint:"Faqat so'z yozsangiz ham bo'ladi (olma yoki apple), tarjimasini avtomatik topaman."},
 };
 const LI={uz:0,en:1,ru:2,de:3};
 const PLAY=[["quiz","🎯","Test"],["wheel","🎡","Omad charxpalagi"],["match","🔗","Juftliklarni topish"],["scramble","🔤","Harflarni tartiblash"],["dragl","🖐️","Harfni sudrab qo'y"],["memory","🧠","Xotira o'yini"],["fill","✏️","Bo'sh joyni to'ldirish"],["tf","✅","To'g'ri / Noto'g'ri"],["wsearch","🔍","So'z topish"],["crossword","🧩","Krossvord"],["cloze","🕳️","Teshik to'ldir (sudrab)"],["listen","🎧","Eshitish"],["hang","🪢","So'z taxmini"],["dictation","🎙️","Diktant"],["puzzle","🌀","Puzzle"],["bubble","🫧","Pufakchalar"],["race","🏎️","Poyga: raqibga qarshi"],["bomb","💣","Bomba"],["simon","🧬","Xotira zanjiri"],["spot","🕵️","Xatoni top"]];
-const SEED=[{id:'demo',name:'Ingliz → O\'zbek: asosiy so\'zlar',from:'en',to:'uz',pairs:[['apple','olma'],['book','kitob'],['water','suv'],['house','uy'],['friend',"do'st"],['school','maktab'],['teacher',"o'qituvchi"],['bread','non']]}];
-let S={lang:'uz',sets:LS.get('sets',SEED),cur:LS.get('cur',null),view:'home',edit:null};
-if(!S.sets.length)S.sets=SEED;
-if(!S.sets.find(x=>x.id===S.cur))S.cur=S.sets[0].id;
+const mig=()=>{let w=LS.get('words',null);if(!w){w=[];LS.get('sets',[]).forEach(z=>z.pairs.forEach(p=>{if(!/\p{Extended_Pictographic}/u.test(p[0]))w.push({w:p[0],tr:p[1],lg:z.from})}))}return[{id:'s1',name:"Mening so'zlarim",words:w}]};
+let S={lang:'uz',sets:LS.get('sets2',null)||mig(),cur:LS.get('cur2',null),view:'home',focus:null,ask:0};
+if(!S.sets.length)S.sets=mig();if(!S.sets.find(x=>x.id===S.cur))S.cur=S.sets[0].id;
+if(LS.get('trv',0)<2){S.sets.forEach(z=>z.words.forEach(x=>{x.tr=null}));LS.set('sets2',S.sets);LS.set('trv',2)}
+const cs=()=>S.sets.find(x=>x.id===S.cur);
+const NEED=new Set(['quiz','wheel','match','memory','fill','tf','cloze','bubble','race','bomb','hang','crossword']);let NOTR=false;
 const t=k=>L[S.lang][k];
-const save=()=>{LS.set('lang',S.lang);LS.set('sets',S.sets);LS.set('cur',S.cur)};
-const curSet=()=>S.sets.find(x=>x.id===S.cur);
+const save=()=>{LS.set('sets2',S.sets);LS.set('cur2',S.cur)};
+const LGW=w=>(S.sets.flatMap(z=>z.words).find(x=>x.w===w)||{}).lg||'en';
+const P=a=>NOTR?h('button','card3d','🔊 '+[...a].length+' harf',()=>say(a,LGW(a))):h('div','big',a);
 const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 function h(tag,cls,txt,fn){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;if(fn)e.onclick=fn;return e}
 function toast(m){const e=$('#toast');e.textContent=m;e.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='',2200)}
-
+ 
 function hdr(a){
   const d=h('header','hd');
   const wm=h('button','wm',null,()=>{S.view='home';render()});wm.setAttribute('aria-label',"So'zTop");
@@ -134,31 +141,70 @@ function hdr(a){
   a.append(d);
 }
 function render(){try{speechSynthesis.cancel()}catch(e){}RUNID++;const a=$('#app');a.replaceChildren();document.documentElement.lang=S.lang;(S.view==='teacher'?teacher:home)(a)}
-
+ 
 function home(a){
   hdr(a);a.append(h('h1','',t('tag')));
-  const sel=h('select');S.sets.forEach(s=>{const o=h('option','',s.name+' ('+s.pairs.length+')');o.value=s.id;sel.append(o)});
+  const sel=h('select');S.sets.forEach(z=>{const o=h('option','',z.name+' ('+z.words.filter(x=>x.w.trim()).length+')');o.value=z.id;sel.append(o)});
   sel.value=S.cur;sel.onchange=()=>{S.cur=sel.value;save()};
   const row=h('label','pick',t('set')+':');row.append(sel);a.append(row);
   const g=h('div','grid');
-  PLAY.forEach(([id,e,n],i)=>{const b=h('button','gc',null,()=>start(id));b.style.setProperty('--h',i*47);b.style.setProperty('--i',i);b.append(h('span','em',e),h('span','nm',n));g.append(b)});
-  a.append(g);
+  PLAY.forEach(([id,e,nm],i)=>{const b=h('button','gc',null,()=>start(id));b.style.setProperty('--h',i*47);b.style.setProperty('--i',i);b.append(h('span','em',e),h('span','nm',nm));g.append(b)});
+  a.append(g,h('p','mut ver','v0.0.0.1'));
 }
-
-function start(id){
-  const s=curSet();if(!s||s.pairs.length<4)return toast(t('need'));
-  const a=$('#app');a.replaceChildren();hdr(a);
+const TP='You translate vocabulary for an Uzbek language class. Input is a JSON array of {"id","w"}: each w is a word or short phrase in any language (may contain small typos). Translate EVERY item separately; different words must get different translations. Reply with only a JSON array with exactly one object per input, same ids: {"id": number, "w": the word with spelling fixed, "tr": its translation into Uzbek (Latin script, short and natural; if w is already Uzbek, translate it into English instead), "lg": ISO 639-1 code of w}. Input: ';
+const webOne=async w=>{
+  const g=async tl=>{const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl='+tl+'&dt=t&q='+encodeURIComponent(w));if(!r.ok)throw 0;const d=await r.json();return{tr:d[0].map(p=>p[0]).join('').trim(),lg:d[2]||'en'}};
+  try{let o=await g('uz');if(o.lg==='uz')o={tr:(await g('en')).tr,lg:'uz'};if(!o.tr)throw 0;return o}
+  catch(e){const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(w)+'&langpair=Autodetect|uz'),d=await r.json(),tr=d.responseData&&d.responseData.translatedText;if(!tr)throw 0;return{tr:String(tr).trim(),lg:'en'}}};
+async function webAll(todo){
+  try{for(let i=0;i<todo.length;i+=5)await Promise.all(todo.slice(i,i+5).map(async x=>{const o=await webOne(x.w.trim());x.w=x.w.trim();x.tr=o.tr;x.lg=o.lg}));save();return ''}
+  catch(e){save();return "Tarjima xizmatiga ulanib bo'lmadi. Internetni tekshirib, «Qayta urinish»ni bosing."}}
+async function trAll(){
+  const todo=cs().words.filter(x=>x.w.trim()&&!x.tr);let sm=null;
+  try{sm=window.claude&&await window.claude.use('sample')}catch(e){}
+  if(!sm)return await webAll(todo);
+  try{const pm=await window.claude.use('permissions');if(pm){let st=await pm.state('sample');if(st==='prompt')st=(await pm.request(['sample'])).sample;
+    if(st==='denied')return "Claude ruxsati o'chirilgan. «Ruxsatni yoqish» tugmasini bosib, Claude'ga ruxsat bering.";}}catch(e){}
+  for(let i=0;i<todo.length;i+=15){const part=todo.slice(i,i+15);
+    try{const ask=async()=>{const q=TP+JSON.stringify(part.map((x,k)=>({id:k,w:x.w.trim()})));let le;
+        const fix=r=>{const a=Array.isArray(r)?r:(r.items||[]),m=part.map((_,k)=>a.find(o=>o&&Number(o.id)===k)||a[k]),tr=m.map(o=>o&&o.tr&&String(o.tr).trim().toLowerCase());if(part.length>2&&new Set(tr).size<2)throw {code:'invalid_json',message:'bir xil tarjima'};return m};
+        for(const [js,tier] of [[1,'default'],[0,'default'],[0,'quick'],[0,'complex']]){
+          try{if(js)return fix(await sm.json(q,{cache:false,modelTier:tier}));
+            const r=await sm(q,{cache:false,modelTier:tier}),m=r.text.match(/[\[{][\s\S]*[\]}]/);if(!m)throw {code:'invalid_json',message:r.text.slice(0,80)};return fix(JSON.parse(m[0]))}
+          catch(e){le=e;if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','rate_limited','session_expired'].includes(e.code))throw e}}
+        throw le};
+      const res=await ask();
+      const it=Array.isArray(res)?res:(res.items||[]);
+      part.forEach((x,k)=>{const r=it[k];if(r&&r.tr){x.w=String(r.w||x.w).trim();x.tr=String(r.tr).trim();x.lg=r.lg||'en'}});save();
+    }catch(e){const c=e&&e.code;return c==='not_granted'?"Tarjima uchun ruxsat berilmadi. Sahifani yangilab, ruxsat bering.":c==='rate_limited'?"Limit tugadi, birozdan keyin urinib ko'ring.":"Tarjimon xatosi ("+(c||'?')+": "+String((e&&e.message)||e).slice(0,120)+"). Qayta urinib ko'ring."}}
+  return '';
+}
+async function start(id){
+  const ws=cs().words.filter(x=>x.w.trim());
+  if(ws.length<4)return toast(t('need'));
+  NOTR=!NEED.has(id);
+  const rid=++RUNID,a=$('#app');a.replaceChildren();hdr(a);
   const top=h('div','row'),pr=h('div','prog'),fill=h('i');pr.append(fill);
   top.append(h('button','btn ghost','← '+t('back'),render),pr);
   const box=h('div','game enter');a.append(top,box);
-  const c={id:++RUNID,box,set:s,prog:p=>fill.style.width=Math.round(p*100)+'%',done(sc,tot,ex){
+  if(!NOTR&&ws.some(x=>!x.tr)){
+    box.replaceChildren(h('p','mut','🌐 '+t('translating')));
+    const er=await trAll();if(rid!==RUNID)return;
+    if(er)return box.replaceChildren(h('p','mut',er),E('div','row2',
+      ...(window.claude?[h('button','btn',"Ruxsatni yoqish",async()=>{try{const pm=await window.claude.use('permissions');if(pm)await pm.manage();else toast("Ruxsatlar menyusi: artifact sozlamalarida «Permissions»")}catch(e){toast("Artifact sozlamalaridagi «Permissions» menyusini oching")}start(id)})]:[]),
+      h('button','btn ghost',"Qayta urinish",()=>start(id))));
+  }
+  const seen=new Set(),pairs=ws.filter(x=>(NOTR||x.tr)&&!seen.has(x.w.toLowerCase())&&seen.add(x.w.toLowerCase())).map(x=>[x.w,NOTR?x.w:x.tr]);
+  if(pairs.length<4)return box.replaceChildren(h('p','mut',t('need')));
+  box.replaceChildren();box.classList.remove('enter');void box.offsetWidth;box.classList.add('enter');
+  const c={id:rid,box,prog:p=>fill.style.width=Math.round(p*100)+'%',done(sc,tot,ex){
     const pc=tot?Math.round(sc/tot*100):0;c.prog(1);
     const r=h('div','row2');r.append(h('button','btn',t('again'),()=>start(id)),h('button','btn ghost',t('home'),render));
     box.replaceChildren(h('div','big',pc+'%'),h('p','mut',t('score')+': '+sc+'/'+tot+(ex?', '+ex:'')),h('p','mut',pc>=80?t('good'):pc>=50?t('fine'):t('more')),r);
   }};
-  G[id](c,s.pairs);
+  G[id](c,pairs);
 }
-
+ 
 const G={};let RUNID=0;
 G.quiz=(c,w)=>{
   const q=sh(w).slice(0,10);let i=0,ok=0;
@@ -201,7 +247,7 @@ const tiles=(c,q,sp)=>{
       if(ans.length)slots.lastChild.classList.add('new');pool.forEach(x=>{const b=h('button','lt'+(x.ch.length>1?' wd':''),x.ch,()=>{x.used=true;ans.push(x);draw();check()});b.disabled=x.used;pl.append(b)});
       const r=h('div','row2');
       r.append(h('button','btn ghost',t('clear'),()=>{ans=[];pool.forEach(y=>y.used=false);draw()}));
-      c.box.replaceChildren(h('div','big',a),slots,pl,r);
+      c.box.replaceChildren(P(a),slots,pl,r);
     };
     const check=()=>{
       if(ans.length!==word.length)return;
@@ -230,11 +276,11 @@ G.memory=(c,w)=>{
     };g.append(b)});
   c.box.append(g);
 };
-
+ 
 const mark=(e,g)=>e.classList.add(g?'ok':'bad');
 const E=(tag,cls,...k)=>{const e=h(tag,cls);e.append(...k);return e};
 const opts=(w,b)=>sh([b,...sh(w.filter(x=>x[1]!==b)).slice(0,3).map(x=>x[1])]);
-const say=(txt,lg)=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang={uz:'uz-UZ',en:'en-US',ru:'ru-RU',de:'de-DE'}[lg];speechSynthesis.speak(u)}catch(e){}};
+const say=(txt,lg)=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=({uz:'uz-UZ',en:'en-US',ru:'ru-RU',de:'de-DE'}[lg]||lg);speechSynthesis.speak(u)}catch(e){}};
 function rounds(c,q,fn){let i=0,ok=0;const nx=()=>{if(c.id!==RUNID)return;c.box.classList.remove('enter');void c.box.offsetWidth;c.box.classList.add('enter');if(i>=q.length)return c.done(ok,q.length);c.prog(i/q.length);let d=0;fn(q[i],(g,dl=800)=>{if(d++)return;if(g)ok++;i++;setTimeout(nx,dl)},c.box)};nx()}
 const typed=(bx,top,tg,ans)=>{const i=h('input');i.autocomplete='off';i.setAttribute('autocapitalize','off');
   const go=()=>{i.disabled=true;const g=i.value.trim().toLowerCase()===tg.toLowerCase();i.style.borderColor=g?'var(--ok)':'var(--bad)';if(!g)bx.append(h('p','mut',tg));ans(g,1000)};
@@ -243,9 +289,9 @@ G.scramble=(c,w)=>tiles(c,sh(w.filter(x=>x[1].replace(/\s/g,'').length>1)).slice
 G.puzzle=(c,w)=>tiles(c,sh(w.filter(x=>[...x[1]].length>=4)).slice(0,6),s=>{s=[...s.replace(/\s/g,'')];const n=Math.ceil(s.length/3),o=[];for(let i=0;i<s.length;i+=n)o.push(s.slice(i,i+n).join(''));return o});
 G.fill=(c,w)=>rounds(c,sh(w).slice(0,8),([a,b],ans,bx)=>{const ch=[...b],ix=sh(ch.map((x,i)=>i).filter(i=>ch[i]!==' ')).slice(0,Math.ceil(ch.length/2));
   typed(bx,[h('div','big',a),h('div','big mask',ch.map((x,i)=>ix.includes(i)?'_':x).join(' '))],b,ans)});
-G.dictation=(c,w)=>rounds(c,sh(w).slice(0,8),([a,b],ans,bx)=>{say(a,c.set.from);typed(bx,[h('button','card3d','🔊',()=>say(a,c.set.from)),h('p','mut','Tarjimasi: '+b)],a,ans)});
-G.listen=(c,w)=>rounds(c,sh(w).slice(0,8),([a],ans,bx)=>{say(a,c.set.from);
-  bx.replaceChildren(h('button','card3d','🔊',()=>say(a,c.set.from)),...sh([a,...sh(w.filter(x=>x[0]!==a)).slice(0,3).map(x=>x[0])]).map(v=>h('button','opt',v,function(){mark(this,v===a);ans(v===a,800)})))});
+G.dictation=(c,w)=>rounds(c,sh(w).slice(0,8),([a,b],ans,bx)=>{say(a,LGW(a));typed(bx,[h('button','card3d','🔊',()=>say(a,LGW(a))),h('p','mut',NOTR?'':'Tarjimasi: '+b)],a,ans)});
+G.listen=(c,w)=>rounds(c,sh(w).slice(0,8),([a],ans,bx)=>{say(a,LGW(a));
+  bx.replaceChildren(h('button','card3d','🔊',()=>say(a,LGW(a))),...sh([a,...sh(w.filter(x=>x[0]!==a)).slice(0,3).map(x=>x[0])]).map(v=>h('button','opt',v,function(){mark(this,v===a);ans(v===a,800)})))});
 G.tf=(c,w)=>rounds(c,sh(w).slice(0,10),([a,b],ans,bx)=>{const ok=Math.random()<.5,s=ok?b:sh(w.filter(x=>x[1]!==b))[0][1];
   bx.replaceChildren(h('div','big',a),h('div','big',s),E('div','two',...[true,false].map(v=>h('button','opt',v?'✔':'✖',function(){mark(this,v===ok);ans(v===ok,700)}))))});
 G.cloze=(c,w)=>{const q=sh(w).slice(0,6),bank=sh(q.map(x=>x[1])),val=q.map(()=>null);
@@ -303,7 +349,7 @@ G.crossword=(c,w)=>{
   c.box.append(grid,...pl.map((p,n)=>h('p','mut cl',(n+1)+(p.d?' ↓ ':' → ')+p.a)),
     h('button','btn',t('check'),()=>{let ok=0;cells.forEach(([i,ch])=>{const g=i.value.toUpperCase()===ch;if(g)ok++;i.style.borderColor=g?'var(--ok)':'var(--bad)'});setTimeout(()=>c.done(ok,cells.length),900)}));
 };
-
+ 
 const DR=(el,drop)=>{el.style.touchAction='none';el.style.cursor='grab';el.onpointerdown=e=>{e.preventDefault();const sx=e.clientX,sy=e.clientY;try{el.setPointerCapture(e.pointerId)}catch(x){}el.style.zIndex=9;el.style.transition='none';
   el.onpointermove=m=>{el.style.transform='translate('+(m.clientX-sx)+'px,'+(m.clientY-sy)+'px) scale(1.12)'};
   el.onpointerup=el.onpointercancel=u=>{el.onpointermove=el.onpointerup=el.onpointercancel=null;const hl=document.elementsFromPoint(u.clientX,u.clientY).find(x=>x.classList.contains('hole'));
@@ -314,7 +360,7 @@ G.dragl=(c,w)=>rounds(c,sh(w.filter(x=>[...x[1].replace(/\s/g,'')].length>2)).sl
     const hs=E('div','slots',...ch.map((_,i)=>{const e=h('div','lt hole'+(put[i]?' fl':''),put[i]?put[i].x:'');e.dataset.i=i;return e}));
     const pl=E('div','pool',...pool.filter(p=>!put.includes(p)).map(p=>{const e=h('button','lt',p.x);
       DR(e,hl=>{const i=+hl.dataset.i;if(put[i]||ch[i]!==p.x){mis++;return 0}put[i]=p;draw();if(put.every(Boolean)){bx.querySelector('.slots').classList.add('ok');ans(mis===0,900)}return 1});return e}));
-    bx.replaceChildren(h('div','big',a),h('p','mut',"Harflarni to'g'ri joyga sudrab qo'ying"),hs,pl)};draw()});
+    bx.replaceChildren(P(a),h('p','mut',"Harflarni to'g'ri joyga sudrab qo'ying"),hs,pl)};draw()});
 G.bubble=(c,w)=>rounds(c,sh(w).slice(0,8),([a,b],ans,bx)=>{
   const ar=h('div','arena'),os=sh([...new Set([b,...sh(w.filter(x=>x[1]!==b)).map(x=>x[1])])].slice(0,6));
   os.forEach(o=>{const e=h('button','bub',o,function(){e.style.animationPlayState='paused';mark(this,o===b);ans(o===b,700)});
@@ -343,9 +389,9 @@ G.simon=(c,w)=>{const pool=sh(w).slice(0,6).map(x=>x[1]),seq=[],M=8;
 G.spot=(c,w)=>rounds(c,sh(w.filter(x=>[...x[1]].length>2)).slice(0,8),([a,b],ans,bx)=>{
   const ch=[...b],ix=ch.map((x,i)=>/\p{L}/u.test(x)?i:-1).filter(i=>i>=0),k=ix[Math.random()*ix.length|0],
     al=[...'abcdefghijklmnoprstuvxyz'].filter(x=>x!==ch[k].toLowerCase()),bad=ch.slice();bad[k]=al[Math.random()*al.length|0];
-  bx.replaceChildren(h('p','mut',"Tarjimada 1 ta xato harf bor — toping!"),h('div','big',a),E('div','pool',...bad.map((x,i)=>{
+  bx.replaceChildren(h('p','mut',"1 ta xato harf bor — toping!"),P(a),E('div','pool',...bad.map((x,i)=>{
     const bt=h('button','lt',x,function(){mark(this,i===k);if(i!==k)bx.append(h('p','mut',b));ans(i===k,1000)});if(x===' ')bt.disabled=true;return bt})))});
-
+ 
 G.wheel=(c,w)=>{
   const items=sh(w).slice(0,10),total=items.length;
   let ok=0,th=0,om=0,busy=false,drag=null,raf=0,lt=0,moved=0,last=-1;
@@ -362,7 +408,7 @@ G.wheel=(c,w)=>{
   const idx=()=>{const n=items.length,a=((-th)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);return Math.min(n-1,Math.floor(a/(2*Math.PI/n)))};
   const ang=e=>{const r=wrap.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)};
   const settle=()=>{
-    if(!items.length)return;busy=true;const k=idx(),it=items[k];say(it[0],c.set.from);
+    if(!items.length)return;busy=true;const k=idx(),it=items[k];say(it[0],LGW(it[0]));
     q.classList.remove('enter');void q.offsetWidth;q.classList.add('enter');
     const nb=h('button','btn',"Keyingi ➜",()=>{c.prog((total-items.length+1)/total);items.splice(k,1);q.replaceChildren();if(!items.length)return c.done(total,total);
       draw();cv.animate([{transform:'rotate('+th+'rad) scale(.8)',opacity:.3},{transform:'rotate('+th+'rad) scale(1)',opacity:1}],{duration:350,easing:'ease-out'});busy=false});
@@ -381,47 +427,38 @@ G.wheel=(c,w)=>{
     lt=performance.now();raf=requestAnimationFrame(step)};
   draw();
 };
-
+ 
 function teacher(a){
   hdr(a);a.append(h('h1','',t('teacher')));
-  S.sets.forEach(s=>{
-    const r=h('div','setrow');
-    r.append(h('b','',s.name),h('span','mut',s.pairs.length+' '+t('w')+', '+s.from+' → '+s.to),
-      h('button','btn ghost',t('edit'),()=>{S.edit=s;render()}),
-      h('button','btn ghost',t('del'),()=>{if(S.sets.length<2)return;S.sets=S.sets.filter(x=>x!==s);if(S.cur===s.id)S.cur=S.sets[0].id;if(S.edit===s)S.edit=null;save();render()}));
-    a.append(r);
+  const z=cs(),bar=h('div','row2'),sel=h('select');
+  S.sets.forEach(q=>{const o=h('option','',q.name+' ('+q.words.filter(x=>x.w.trim()).length+')');o.value=q.id;sel.append(o)});
+  sel.value=S.cur;sel.onchange=()=>{S.cur=sel.value;S.ask=0;save();render()};
+  bar.append(sel,h('button','btn',"＋ Yangi to'plam",()=>{const n={id:'s'+Date.now(),name:"Yangi to'plam",words:[{w:'',tr:null,lg:''}]};S.sets.push(n);S.cur=n.id;S.focus=-1;save();render()}),
+    h('button','btn '+(S.ask?'bad2':'ghost'),S.ask?"Aniq o'chirilsinmi? Ha":"To'plamni o'chirish",()=>{
+      if(S.sets.length<2)return toast("Kamida bitta to'plam qolishi kerak");
+      if(!S.ask){S.ask=1;render();return}
+      S.ask=0;S.sets=S.sets.filter(q=>q!==z);S.cur=S.sets[0].id;save();render();toast("O'chirildi")}));
+  a.append(bar);
+  const nm=h('input');nm.value=z.name;nm.placeholder=t('name');nm.oninput=()=>{z.name=nm.value;save()};nm.onchange=render;
+  a.append(E('div','frm',h('b','',t('name')),nm));
+  if(!z.words.length)z.words.push({w:'',tr:null,lg:''});
+  const add=i=>{z.words.splice(i+1,0,{w:'',tr:null,lg:''});S.focus=i+1;save();render()};
+  const f=h('div','frm');
+  f.append(h('p','mut',"Har bir inputga bitta so'z yozing (istalgan tilda). Tarjima kerakli o'yin boshlanganda avtomatik qilinadi."));
+  z.words.forEach((x,i)=>{
+    const inp=h('input');inp.value=x.w;inp.placeholder="So'z (masalan: hund)";inp.autocomplete='off';inp.setAttribute('autocapitalize','off');
+    const tl=h('span','mut tr',x.tr?'→ '+x.tr:'');
+    inp.oninput=()=>{x.w=inp.value.trim();x.tr=null;tl.textContent='';save()};
+    inp.onkeydown=e=>{if(e.key==='Enter')add(i)};
+    f.append(E('div','wrow',inp,tl,E('div','row2',h('button','btn ghost',"＋ Qo'shish",()=>add(i)),h('button','btn ghost',"O'chirish",()=>{z.words.splice(i,1);save();render()}))));
   });
-  const e=S.edit,f=h('div','frm');
-  const nm=h('input');nm.placeholder=t('name');nm.value=e?e.name:'';
-  const lang=v=>{const s=h('select');Object.keys(FL).forEach(k=>{const o=h('option','',FL[k]+' '+k);o.value=k;s.append(o)});s.value=v;return s};
-  const fr=lang(e?e.from:'en'),to=lang(e?e.to:'uz');
-  const ta=h('textarea');ta.placeholder=t('words')+'\napple\nbook = kitob\nolma';
-  ta.value=e?e.pairs.map(p=>p.join(' = ')).join('\n'):'';
-  const r=h('div','r'),lf=h('label','',t('from')+' '),lt=h('label','',t('to')+' ');lf.append(fr);lt.append(to);r.append(lf,lt);
-  const LN={uz:'Uzbek (Latin script)',en:'English',ru:'Russian',de:'German'};
-  const parse=()=>ta.value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const m=l.match(/^(.+?)\s*[=\t]\s*(.+)$/);if(!m)return{raw:l};const q=m[2].split(/\s*=\s*/);return{p:[m[1].trim(),q[0].trim(),...(q[1]?[q[1].trim()]:[])]}});
-  const doTr=async()=>{
-    const it=parse(),todo=it.filter(x=>x.raw).map(x=>x.raw);if(!todo.length)return;
-    trb.disabled=sb.disabled=true;const old=trb.textContent;trb.textContent=t('translating');
-    try{const sm=window.claude&&await window.claude.use('sample');if(!sm)throw 0;
-      const res=await sm.json('You are a vocabulary translator. Source language: '+LN[fr.value]+'. Target language: '+LN[to.value]+'. Each item below is a word or short phrase written in EITHER language. For every item, in the same order, return [word in the source language, its translation in the target language]. Items: '+JSON.stringify(todo)+'\nReply with JSON only: {"pairs":[["...","..."]]}');
-      const ps=res.pairs||[];let k=0;
-      ta.value=it.map(x=>{if(x.p)return x.p.join(' = ');const q=ps[k++];return q&&q[0]&&q[1]?q[0]+' = '+q[1]:x.raw}).join('\n');
-    }catch(x){toast(t('trfail'))}
-    trb.disabled=sb.disabled=false;trb.textContent=old};
-  const trb=h('button','btn ghost',t('translate'),doTr);
-  const sb=h('button','btn',t('save'),async()=>{
-    await doTr();const pairs=parse().filter(x=>x.p).map(x=>x.p);
-    if(pairs.length<4)return toast(t('need'));
-    const name=nm.value.trim()||('Set '+(S.sets.length+1));
-    if(e){Object.assign(e,{name,from:fr.value,to:to.value,pairs})}
-    else{const n={id:String(Date.now()),name,from:fr.value,to:to.value,pairs};S.sets.push(n);S.cur=n.id}
-    S.edit=null;save();render();toast(t('saved'))});
-  f.append(h('b','',e?t('edit'):t('newset')),nm,r,h('p','mut',t('trhint')),ta,E('div','row2',trb,sb));
-  if(e)f.append(h('button','btn ghost',t('back'),()=>{S.edit=null;render()}));
-  a.append(f);
+  a.append(f,h('p','mut',"Jami: "+z.words.filter(x=>x.w.trim()).length+" ta so'z"),h('p','mut ver','v0.0.0.1'));
+  if(S.focus!=null){const el=document.querySelectorAll('.wrow input')[Math.max(0,S.focus)];S.focus=null;if(el)el.focus()}
 }
 render();
 </script>
 </body>
 </html>
+ 
+
+Claude finished the response
